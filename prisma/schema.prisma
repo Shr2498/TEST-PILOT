@@ -1,0 +1,240 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// String constants for enum-like values
+// UserRole: "OWNER" | "ADMIN" | "MEMBER" | "VIEWER"
+// TestCasePriority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL"
+// TestCaseStatus: "DRAFT" | "ACTIVE" | "DEPRECATED" | "ARCHIVED"
+// TestRunStatus: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED"
+// TestResultStatus: "not_run" | "pass" | "fail" | "blocked" | "skipped"
+
+// Models
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  avatar    String?
+  password  String?  // For demo purposes, in production use proper hashing
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  teamId String
+  team   Team   @relation("TeamUsers", fields: [teamId], references: [id], onDelete: Cascade)
+  memberOfTeam Team? @relation("TeamMembers", fields: [memberOfTeamId], references: [id])
+  memberOfTeamId String?
+  
+  ownedProjects Project[] @relation("ProjectOwner")
+
+  // User can be assigned to test cases and test runs
+  assignedTestCases TestCase[]
+  assignedTestRuns  TestRun[]
+  testRunResults    TestRunResult[]
+
+  @@map("users")
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  users    User[]    @relation("TeamUsers")
+  members  User[]    @relation("TeamMembers")
+  projects Project[]
+
+  @@map("teams")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  slug        String
+  status      String   @default("active")  // Project status: active, archived, on_hold
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  ownerId String
+  owner   User   @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  testCases  TestCase[]
+  testSuites TestSuite[]
+
+  @@unique([teamId, slug])
+  @@unique([ownerId, slug])
+  @@index([teamId])
+  @@index([ownerId])
+  @@map("projects")
+}
+
+model TestCase {
+  id             String            @id @default(cuid())
+  title          String
+  description    String?
+  preconditions  String?
+  expectedResult String?
+  priority       String  @default("MEDIUM")  // TestCasePriority
+  status         String  @default("DRAFT")   // TestCaseStatus
+  estimatedTime  Int?              // in minutes
+  module         String?           // feature/module name
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  // Relationships
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  assignedUserId String?
+  assignedUser   User?   @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
+
+  testSteps       TestStep[]
+  testSuiteItems  TestSuiteItem[]
+  testRunResults  TestRunResult[]
+  tags            TestCaseTag[]
+
+  @@index([projectId])
+  @@index([status])
+  @@index([priority])
+  @@index([assignedUserId])
+  @@map("test_cases")
+}
+
+model TestStep {
+  id          String  @id @default(cuid())
+  stepNumber  Int
+  action      String
+  expected    String?
+  notes       String?
+  
+  // Relationships
+  testCaseId String
+  testCase   TestCase @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+
+  @@unique([testCaseId, stepNumber])
+  @@index([testCaseId])
+  @@map("test_steps")
+}
+
+model TestSuite {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  testSuiteItems TestSuiteItem[]
+  testRuns       TestRun[]
+
+  @@index([projectId])
+  @@map("test_suites")
+}
+
+model TestSuiteItem {
+  id    String @id @default(cuid())
+  order Int
+
+  // Relationships
+  testSuiteId String
+  testSuite   TestSuite @relation(fields: [testSuiteId], references: [id], onDelete: Cascade)
+
+  testCaseId String
+  testCase   TestCase @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+
+  @@unique([testSuiteId, testCaseId])
+  @@unique([testSuiteId, order])
+  @@index([testSuiteId])
+  @@map("test_suite_items")
+}
+
+model TestRun {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  status      String @default("PENDING")  // TestRunStatus
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relationships
+  testSuiteId String
+  testSuite   TestSuite @relation(fields: [testSuiteId], references: [id], onDelete: Cascade)
+
+  assignedUserId String?
+  assignedUser   User?   @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
+
+  testRunResults TestRunResult[]
+
+  @@index([testSuiteId])
+  @@index([status])
+  @@index([assignedUserId])
+  @@map("test_runs")
+}
+
+model TestRunResult {
+  id        String           @id @default(cuid())
+  status    String @default("not_run")  // TestResultStatus
+  notes     String?
+  executedAt DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Relationships
+  testRunId String
+  testRun   TestRun @relation(fields: [testRunId], references: [id], onDelete: Cascade)
+
+  testCaseId String
+  testCase   TestCase @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+
+  executedByUserId String?
+  executedBy       User?   @relation(fields: [executedByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([testRunId, testCaseId])
+  @@index([testRunId])
+  @@index([status])
+  @@map("test_run_results")
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  color String @default("#6B7280") // Default gray color
+
+  // Relationships
+  testCases TestCaseTag[]
+
+  @@map("tags")
+}
+
+model TestCaseTag {
+  // Junction table for many-to-many relationship
+  testCaseId String
+  testCase   TestCase @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+
+  tagId String
+  tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([testCaseId, tagId])
+  @@map("test_case_tags")
+}
