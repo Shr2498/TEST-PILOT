@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Settings, LogOut, User as UserIcon } from 'lucide-react'
+import { Settings, User as UserIcon } from 'lucide-react'
 import { MobileSidebar } from './sidebar'
 import LogoutButton from '@/components/auth/logout-button'
 import { SimpleThemeToggle } from '@/components/theme-toggle'
@@ -26,7 +26,7 @@ interface HeaderProps {
   }
 }
 
-export function Header({ user }: HeaderProps) {
+export function Header({ user }: Readonly<HeaderProps>) {
   const initials = user.name
     ?.split(' ')
     .map(n => n[0])

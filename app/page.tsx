@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { CheckCircle, Users, Clock, Target, BarChart, Shield, Zap, FileText, PlayCircle } from 'lucide-react'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Users, Clock, Target, BarChart, Shield, Zap, FileText, PlayCircle } from 'lucide-react'
 
 export default async function HomePage() {
   const user = await getCurrentUser()

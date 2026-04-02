@@ -97,8 +97,8 @@ export async function createProject(data: ProjectFormData) {
     // Generate a slug from the project name
     const slug = validatedData.name
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
+      .replaceAll(/[^a-z0-9]+/g, '-')
+      .replaceAll(/(^-|-$)/g, '')
     
     const project = await prisma.project.create({
       data: {

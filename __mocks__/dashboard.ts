@@ -1,6 +1,6 @@
 /**
- * Mock data for dashboard development
- * TODO: Replace with real API calls when backend is ready
+ * Mock data for dashboard MVP demonstration
+ * Production version should replace with real API calls when backend is ready
  */
 
 export const mockDashboardStats = {

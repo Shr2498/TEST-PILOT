@@ -34,7 +34,7 @@ interface SidebarProps {
   className?: string
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className }: Readonly<SidebarProps>) {
   const pathname = usePathname()
 
   return (
@@ -73,7 +73,7 @@ interface MobileSidebarProps {
   children?: React.ReactNode
 }
 
-export function MobileSidebar({ children }: MobileSidebarProps) {
+export function MobileSidebar({ children }: Readonly<MobileSidebarProps>) {
   const [open, setOpen] = useState(false)
 
   return (

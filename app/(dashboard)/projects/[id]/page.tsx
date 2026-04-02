@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Edit, FileText, FolderOpen, Calendar, User, Settings } from 'lucide-react'
 import { getProject } from '@/lib/actions/projects'
 import { formatDistanceToNow, format } from 'date-fns'
@@ -11,9 +10,9 @@ import { StatusBadge } from '@/components/ui/status-badge'
 
 export default async function ProjectDetailPage({ 
   params 
-}: { 
+}: Readonly<{ 
   params: { id: string } 
-}) {
+}>) {
   const { data, error } = await getProject(params.id)
   const project = data?.project
 

@@ -23,7 +23,7 @@ export function PageHeader({
   action,
   backButton,
   className
-}: PageHeaderProps) {
+}: Readonly<PageHeaderProps>) {
   return (
     <div className={cn('space-y-4', className)}>
       {backButton && (

@@ -29,7 +29,7 @@ export function EmptyState({
   action,
   secondaryAction,
   className
-}: EmptyStateProps) {
+}: Readonly<EmptyStateProps>) {
   return (
     <Card className={className}>
       <CardContent className="flex flex-col items-center justify-center py-16 px-8">

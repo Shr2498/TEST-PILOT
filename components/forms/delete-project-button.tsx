@@ -23,7 +23,7 @@ interface DeleteProjectButtonProps {
   projectName: string
 }
 
-export function DeleteProjectButton({ projectId, projectName }: DeleteProjectButtonProps) {
+export function DeleteProjectButton({ projectId, projectName }: Readonly<DeleteProjectButtonProps>) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)

@@ -6,18 +6,12 @@ import {
   Play, 
   Plus,
   Settings,
-  Search,
   Trash2,
   Edit,
   Eye,
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  Users
+  CheckCircle
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 
 // Import all our new components
 import { PageHeader } from '@/components/ui/page-header'

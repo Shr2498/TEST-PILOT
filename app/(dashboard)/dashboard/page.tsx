@@ -19,13 +19,13 @@ import {
 } from 'lucide-react'
 import { mockDashboardStats } from '@/__mocks__/dashboard'
 
-function StatCard({ title, value, icon: Icon, description, trend }: {
+function StatCard({ title, value, icon: Icon, description, trend }: Readonly<{
   title: string
   value: number
   icon: any
   description: string
   trend?: { value: number; positive: boolean }
-}) {
+}>) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

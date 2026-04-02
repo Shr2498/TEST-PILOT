@@ -54,30 +54,44 @@ export default function RegisterForm() {
     setError(null)
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
-      })
-
-      const result = await response.json()
-
-      if (response.ok) {
+      const result = await registerUser(data)
+      if (result.success) {
         router.push('/login?message=Account created successfully! Please sign in with your credentials.')
       } else {
         setError(result.error || 'Failed to create account. Please try again.')
       }
     } catch (err) {
+      console.error('Registration error:', err)
       setError('Something went wrong. Please check your connection and try again.')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Helper function to get field styling classes
+  const getPasswordConfirmationStyle = () => {
+    if (errors.confirmPassword) {
+      return 'border-red-300 focus:border-red-500 focus:ring-red-200'
+    }
+    if (confirmPassword && password === confirmPassword) {
+      return 'border-green-300 focus:border-green-500 focus:ring-green-200'
+    }
+    return 'focus:border-blue-500 focus:ring-blue-200'
+  }
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      }),
+    })
+
+    const result = await response.json()
+    return { success: response.ok, error: result.error }
   }
 
   return (
@@ -237,13 +251,7 @@ export default function RegisterForm() {
                 autoComplete="new-password"
                 placeholder="Confirm your password"
                 {...register('confirmPassword')}
-                className={`pl-10 pr-10 h-12 transition-all duration-200 ${
-                  errors.confirmPassword 
-                    ? 'border-red-300 focus:border-red-500 focus:ring-red-200' 
-                    : confirmPassword && password === confirmPassword
-                    ? 'border-green-300 focus:border-green-500 focus:ring-green-200'
-                    : 'focus:border-blue-500 focus:ring-blue-200'
-                }`}
+                className={`pl-10 pr-10 h-12 transition-all duration-200 ${getPasswordConfirmationStyle()}`}
                 disabled={isLoading}
               />
               <button

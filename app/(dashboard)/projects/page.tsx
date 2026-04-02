@@ -1,17 +1,16 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Plus, FolderOpen, FileText, Calendar, User, Archive, Pause } from 'lucide-react'
+import { Plus, FolderOpen, FileText, Calendar, User } from 'lucide-react'
 import { getProjects } from '@/lib/actions/projects'
-import { formatDistanceToNow, format } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import { PageHeader } from '@/components/ui/page-header'
 import { StatCard } from '@/components/ui/stat-card'
 import { EmptyProjects } from '@/components/ui/empty-states'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { ErrorState } from '@/components/ui/error-state'
 
-function ProjectCard({ project }: { project: any }) {
+function ProjectCard({ project }: Readonly<{ project: any }>) {
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader>

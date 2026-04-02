@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Plus, FileText, FolderOpen, Search } from 'lucide-react'
@@ -35,7 +35,7 @@ function EmptyTestCasesState() {
   )
 }
 
-function TestCaseCard({ testCase }: { testCase: any }) {
+function TestCaseCard({ testCase }: Readonly<{ testCase: any }>) {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'critical': return 'destructive'
@@ -87,7 +87,7 @@ function TestCaseCard({ testCase }: { testCase: any }) {
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center space-x-4">
             <span className="text-muted-foreground">
-              {testCase.steps.length} step{testCase.steps.length !== 1 ? 's' : ''}
+              {testCase.steps.length} step{testCase.steps.length === 1 ? '' : 's'}
             </span>
             <span className="text-muted-foreground">
               Created {formatDistanceToNow(new Date(testCase.createdAt), { addSuffix: true })}
@@ -100,7 +100,7 @@ function TestCaseCard({ testCase }: { testCase: any }) {
 }
 
 export default async function TestCasesPage(
-  { searchParams }: { searchParams: { project?: string; search?: string } }
+  { searchParams }: Readonly<{ searchParams: { project?: string; search?: string } }>
 ) {
   const { testCases, error } = await getTestCases(searchParams.project)
 

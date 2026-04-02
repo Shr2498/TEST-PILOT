@@ -8,7 +8,7 @@ interface AuthCardProps {
   footer?: ReactNode
 }
 
-export default function AuthCard({ title, subtitle, children, footer }: AuthCardProps) {
+export default function AuthCard({ title, subtitle, children, footer }: Readonly<AuthCardProps>) {
   return (
     <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

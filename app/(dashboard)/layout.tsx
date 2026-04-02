@@ -7,7 +7,7 @@ interface DashboardLayoutProps {
   children: ReactNode
 }
 
-export default async function DashboardLayout({ children }: DashboardLayoutProps) {
+export default async function DashboardLayout({ children }: Readonly<DashboardLayoutProps>) {
   const user = await requireAuth()
 
   return (
