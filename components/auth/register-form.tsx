@@ -78,6 +78,9 @@ export default function RegisterForm() {
     }
     return 'focus:border-blue-500 focus:ring-blue-200'
   }
+
+  // Helper function to register user
+  const registerUser = async (data: RegisterFormData) => {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: {

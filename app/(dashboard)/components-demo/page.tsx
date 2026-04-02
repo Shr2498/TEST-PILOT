@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button'
 // Import all our new components
 import { PageHeader } from '@/components/ui/page-header'
 import { StatCard } from '@/components/ui/stat-card'
-import { EmptyState } from '@/components/ui/empty-state'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { PriorityBadge } from '@/components/ui/priority-badge'
 import { SearchToolbar } from '@/components/ui/search-toolbar'

@@ -33,7 +33,7 @@ export function LoadingState({ variant = 'card', count = 3, className }: Loading
         </div>
         <div className="divide-y">
           {Array.from({ length: count }).map((_, i) => (
-            <div key={i} className="p-4 flex items-center space-x-4">
+            <div key={`loading-table-row-${i}`} className="p-4 flex items-center space-x-4">
               <Skeleton className="h-10 w-10 rounded-full" />
               <div className="space-y-2 flex-1">
                 <Skeleton className="h-4 w-1/4" />

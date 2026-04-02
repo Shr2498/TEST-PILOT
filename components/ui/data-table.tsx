@@ -4,9 +4,7 @@ import { ReactNode } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface Column {
   key: string
@@ -174,7 +172,7 @@ export function DataTable({
               </TableHeader>
               <TableBody>
                 {data.map((row, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={`data-row-${index}`}>
                     {columns.map((column) => (
                       <TableCell key={column.key} className={column.className}>
                         {renderCell(column, row)}
