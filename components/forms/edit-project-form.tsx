@@ -26,7 +26,7 @@ interface EditProjectFormProps {
   project: Project
 }
 
-export function EditProjectForm({ project }: EditProjectFormProps) {
+export function EditProjectForm({ project }: Readonly<EditProjectFormProps>) {
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
     defaultValues: {

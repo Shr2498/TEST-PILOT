@@ -41,7 +41,7 @@ export function DataTable({
   pagination,
   actions,
   className
-}: DataTableProps) {
+}: Readonly<DataTableProps>) {
   const renderCell = (column: Column, row: any) => {
     const value = row[column.key]
     

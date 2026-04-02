@@ -9,7 +9,7 @@ interface LoadingStateProps {
   className?: string
 }
 
-export function LoadingState({ variant = 'card', count = 3, className }: LoadingStateProps) {
+export function LoadingState({ variant = 'card', count = 3, className }: Readonly<LoadingStateProps>) {
   const renderCardSkeleton = () => (
     <Card>
       <CardHeader>

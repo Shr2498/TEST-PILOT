@@ -99,7 +99,7 @@ const statusConfig = {
   }
 }
 
-export function StatusBadge({ status, showIcon = true, className }: StatusBadgeProps) {
+export function StatusBadge({ status, showIcon = true, className }: Readonly<StatusBadgeProps>) {
   const config = statusConfig[status] || statusConfig.inactive
   const Icon = config.icon
 

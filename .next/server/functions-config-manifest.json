@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/register":{},"/login":{},"/projects/[id]/edit":{},"/projects":{},"/projects/[id]":{},"/test-runs":{},"/test-suites":{},"/reports":{},"/dashboard":{}}}
+{"version":1,"functions":{"/login":{},"/register":{},"/projects/[id]/edit":{},"/projects":{},"/projects/[id]":{},"/dashboard":{},"/reports":{},"/test-suites":{},"/test-runs":{}}}
